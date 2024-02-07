@@ -10,9 +10,7 @@ jobs:
       postgres:
         image: postgres
         env:
-          PSQL_DB_USER: aakankshaw
-          PSQL_DB_PASS: IaaPSQL@2024!
-          PSQL_DB: mydb
+          POSTGRES_PASSWORD: IaaPSQL@2024!
         options: >-
           --health-cmd pg_isready
           --health-interval 10s

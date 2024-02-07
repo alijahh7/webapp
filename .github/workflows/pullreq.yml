@@ -1,0 +1,42 @@
+name: PullRequest Workflow
+on:
+  pull_request:
+    branches: [main]
+jobs:
+  validate-pr:
+    runs-on: ubuntu-latest
+    services:
+      # https://docs.github.com/en/actions/using-containerized-services/creating-postgresql-service-containers
+      postgres:
+        image: postgres
+        env:
+          PSQL_DB_USER: aakankshaw
+          PSQL_DB_PASS: IaaPSQL@2024!
+          PSQL_DB: mydb
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - name: Node.js setup
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20.9.0' 
+      - name: Install dependencies
+        run: npm install
+      - name: Connecting to PostgreSQL
+        run: node index.js
+        env:
+          PSQL_DB_USER: aakankshaw
+          PSQL_DB_PASS: IaaPSQL@2024!
+          PSQL_DB: mydb
+          POSTGRES_HOST: postgres
+          POSTGRES_PORT: 5432
+          PORT: 8080
+      - name: Checking completion of workflow
+        run: echo "DONE!" 
+

@@ -119,7 +119,7 @@ router.put('/self', async (req,res)=>{
             }
             else if(Object.keys(req.body).length===0){
                 console.log("Empty Body");
-                res.status(204).end();
+                res.status(400).end();
             }
             Object.keys(req.body).forEach(key => {
                 if(!allowedFields.includes(key)){
@@ -162,7 +162,7 @@ router.put('/self', async (req,res)=>{
               });
             console.log("Account created field:",currentUser.account_created)
             console.log("Account updated field:",currentUser.account_updated)
-            res.status(200);
+            res.status(204);
             //res.send();
            res.send();
             

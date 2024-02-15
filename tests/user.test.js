@@ -21,6 +21,11 @@ beforeAll(async () => {
   await sequelize.sync({ force: true });
 });
 
+afterAll(async () => {
+  await sequelize.close();
+});
+
+
 const Chance = require('chance');
 
 const chance = new Chance(); //https://chancejs.com/index.htmls

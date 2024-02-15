@@ -6,21 +6,6 @@ jobs:
   integration-tests:
     runs-on: ubuntu-latest
 
-    services:
-      postgres:
-        image: postgres
-        env:
-          POSTGRES_PASSWORD: ${{ secrets.PSQL_DB_PASS }}
-          POSTGRES_DB: mydb
-          POSTGRES_USER: ${{ secrets.PSQL_DB_USER }}
-          
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
 
     steps:
       - name: Check out repository code
@@ -29,6 +14,15 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '14.x'
+      - uses: ikalnytskyi/action-setup-postgres@v5
+        with:
+          username: ${{ secrets.PSQL_DB_USER }}
+          password: ${{ secrets.PSQL_DB_PASS }}
+          database: mydb
+          port: 8080
+        id: postgres
+      - name: Start postgres
+        run: systemctl start postgresql  
       - name: Install dependencies
         run: npm install
       - name: Run tests

@@ -20,7 +20,7 @@ app.use((err, req, res, next) => {
     console.log("Body has a payload")
     return res.status(400).send();
     
-}); //https://stackoverflow.com/questions/40142928/how-do-you-reject-an-invalid-json-body-using-express-or-body-parser
+}) //https://stackoverflow.com/questions/40142928/how-do-you-reject-an-invalid-json-body-using-express-or-body-parser
 
 app.all('*', (req,res)=>{ //other methods
   res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate;');

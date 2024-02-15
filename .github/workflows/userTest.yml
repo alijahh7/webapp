@@ -13,7 +13,7 @@ jobs:
           POSTGRES_USER: ${{ secrets.PSQL_DB_USER }}
           POSTGRES_PASSWORD: ${{ secrets.PSQL_DB_PASS }}
         ports:
-          - 5432:5432
+          - 8080:8080
 
     steps:
       - name: Check out repository code

@@ -37,5 +37,10 @@ jobs:
           PSQL_DB: mydb
           HOST: localhost
           PORT: 8080
+      - name: Debug secrets
+        run: |
+          echo "PSQL_DB_USER: ${{ secrets.PSQL_DB_USER }}"
+          echo "PSQL_DB_PASS: ${{ secrets.PSQL_DB_PASS }}"
+
       - name: Checking completion of workflow
         run: echo "DONE!"

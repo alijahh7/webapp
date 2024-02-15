@@ -29,18 +29,17 @@ jobs:
           node-version: '14.x'
       - name: Install dependencies
         run: npm install
-      # - name: Run tests
-      #   run: npx jest
-      #   env:
-      #     PSQL_DB_USER: ${{ secrets.PSQL_DB_USER }}
-      #     PSQL_DB_PASS: ${{ secrets.PSQL_DB_PASS }}
-      #     PSQL_DB: mydb
-      #     HOST: localhost
-      #     PORT: 8080
-      - name: Debug secrets
+      - name: Run tests
         run: |
-          echo "PSQL_DB_USER: ${{ secrets.PSQL_DB_USER }}"
-          echo "PSQL_DB_PASS: ${{ secrets.PSQL_DB_PASS }}"
+          export PSQL_DB_USER="${{ secrets.PSQL_DB_USER }}"
+          export PSQL_DB_PASS="${{ secrets.PSQL_DB_PASS }}"
+          npx jest
+        env:
+          PSQL_DB_USER: ${{ secrets.PSQL_DB_USER }}
+          PSQL_DB_PASS: ${{ secrets.PSQL_DB_PASS }}
+          PSQL_DB: mydb
+          HOST: localhost
+          PORT: 8080
 
       - name: Checking completion of workflow
         run: echo "DONE!"

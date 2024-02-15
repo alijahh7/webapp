@@ -31,8 +31,8 @@ jobs:
         run: npm install
       - name: Create PostgreSQL user and database
         run: |
-          psql -u postgres -c "CREATE USER ${{ secrets.PSQL_DB_USER }} WITH PASSWORD '${{ secrets.PSQL_DB_PASS }}';"
-          psql -u postgres -c "CREATE DATABASE mydb;"
+          sudo -i -u postgres psql -c "CREATE USER ${{ secrets.PSQL_DB_USER }} WITH PASSWORD '${{ secrets.PSQL_DB_PASS }}'; CREATE DATABASE mydb;"
+
       - name: Run tests
         run:
           npx jest

@@ -40,4 +40,4 @@ app.listen(port,()=>{
     console.log(`Running on ${port}`);
 });
 
-module.exports = app;
+module.exports = {app, sequelize};

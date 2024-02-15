@@ -1,10 +1,16 @@
 const req = require('supertest');
-const app = require('../index');
-const { sequelize } = require('../helpers/database');
+const {app} = require('../index');
+const { sequelize } = require('../index');
 const supertest = require('supertest');
+
+
 const Chance = require('chance');
 
 const chance = new Chance(); //https://chancejs.com/index.htmls
+
+beforeAll(async () => {
+  await sequelize.sync({ force: true });
+});
 
 const userDetails = {
   first_name: chance.first(),

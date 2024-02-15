@@ -30,7 +30,7 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Setup database
-        run: psql -U ${{ secrets.PSQL_DB_USER }} -c 'CREATE DATABASE "mydb";'
+        run: psql -h localhost -U ${{ secrets.PSQL_DB_USER }} -c 'CREATE DATABASE "mydb";'
       - name: Run tests
         run:
           npx jest

@@ -28,6 +28,6 @@ jobs:
         run: npx jest
         env:
           POSTGRES_HOST: localhost
-          POSTGRES_PORT: 5432
+          POSTGRES_PORT: 8080
       - name: Checking completion of workflow
         run: echo "DONE!"

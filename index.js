@@ -4,11 +4,6 @@ const sequelize = require('./helpers/database');
 const userController = require('./controllers/userController');
 const healthzController = require('./controllers/healthzController');
 
-
-
-
-const port = process.env.PORT || 8080;
-
 const app=express();
 const bodyParser = require("body-parser");
 app.use(bodyParser.json());
@@ -35,9 +30,5 @@ sequelize.sync()
   .catch((err) => {
     console.error('Error', err);
   });
-
-app.listen(port,()=>{
-    console.log(`Running on ${port}`);
-});
 
 module.exports = {app, sequelize};

@@ -1,5 +1,6 @@
 const req = require('supertest');
 const {app} = require('../index');
+const server = require('../server')
 //const sequelize = require('../helpers/database');
 const supertest = require('supertest');
 require('dotenv').config();
@@ -22,11 +23,10 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  await sequelize.close();
-  setTimeout(() => {
-    process.exit(0);
-  }, 1000);
+  server.close();
 });
+
+
 
 
 
@@ -35,7 +35,7 @@ const Chance = require('chance');
 const chance = new Chance(); //https://chancejs.com/index.htmls
 
 const userDetails = {
-  first_name: chane.first(),
+  first_name: chance.first(),
   last_name: chance.last(),
   password: chance.string({ length: 8 }),
   username: chance.email()

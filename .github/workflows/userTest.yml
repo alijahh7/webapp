@@ -3,13 +3,14 @@ on:
   pull_request:
     branches: [main]
 jobs:
-  validate-pr:
+  integration-tests:
     runs-on: ubuntu-latest
 
     services:
       postgres:
         image: postgres
         env:
+          POSTGRES_USER: ${{ secrets.PSQL_DB_USER }}
           POSTGRES_PASSWORD: ${{ secrets.PSQL_DB_PASS }}
         ports:
           - 5432:5432
@@ -17,14 +18,6 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
-      - name: Setting up PostgreSQL
-        uses: ikalnytskyi/action-setup-postgres@v5
-        with:
-          username: ${{ secrets.PSQL_DB_USER }}
-          password: ${{ secrets.PSQL_DB_PASS }}
-          database: mydb
-          port: 5432
-        id: postgres
       - name: Node.js setup
         uses: actions/setup-node@v2
         with:

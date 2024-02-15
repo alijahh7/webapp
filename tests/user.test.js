@@ -17,10 +17,10 @@ const sequelize = new Sequelize(db, user, pass,{
 });
 
 
-// beforeAll(async () => {
-//  console.log("Synced");
-//   await sequelize.sync({ force: true });
-// });
+beforeAll(async () => {
+ console.log("Synced");
+  await sequelize.sync({ force: true });
+});
 
 afterAll(async () => {
   server.close();

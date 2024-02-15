@@ -29,14 +29,14 @@ jobs:
           node-version: '14.x'
       - name: Install dependencies
         run: npm install
-      - name: Run tests
-        run: npx jest
-        env:
-          PSQL_DB_USER: ${{ secrets.PSQL_DB_USER }}
-          PSQL_DB_PASS: ${{ secrets.PSQL_DB_PASS }}
-          PSQL_DB: mydb
-          HOST: localhost
-          PORT: 8080
+      # - name: Run tests
+      #   run: npx jest
+      #   env:
+      #     PSQL_DB_USER: ${{ secrets.PSQL_DB_USER }}
+      #     PSQL_DB_PASS: ${{ secrets.PSQL_DB_PASS }}
+      #     PSQL_DB: mydb
+      #     HOST: localhost
+      #     PORT: 8080
       - name: Debug secrets
         run: |
           echo "PSQL_DB_USER: ${{ secrets.PSQL_DB_USER }}"

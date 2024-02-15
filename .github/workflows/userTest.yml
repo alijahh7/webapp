@@ -10,9 +10,9 @@ jobs:
       postgres:
         image: postgres
         env:
-          POSTGRES_PASSWORD: postgres
+          POSTGRES_PASSWORD: ${{ secrets.PSQL_DB_PASS }}
           POSTGRES_DB: mydb
-          POSTGRES_USER: aakankshaw
+          POSTGRES_USER: ${{ secrets.PSQL_DB_USER }}
           
         options: >-
           --health-cmd pg_isready
@@ -32,11 +32,10 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Run tests
-        run:
-          npx jest
+        run: npx jest
         env:
-          PSQL_DB_USER: aakankshaw
-          PSQL_DB_PASS: postgres
+          PSQL_DB_USER: ${{ secrets.PSQL_DB_USER }}
+          PSQL_DB_PASS: ${{ secrets.PSQL_DB_PASS }}
           PSQL_DB: mydb
           POSTGRES_HOST: localhost
           PORT: 8080

@@ -35,8 +35,8 @@ jobs:
           export PSQL_DB_PASS="${{ secrets.PSQL_DB_PASS }}"
           npx jest
         env:
-          PSQL_DB_USER: ${{ secrets.PSQL_DB_USER }}
-          PSQL_DB_PASS: ${{ secrets.PSQL_DB_PASS }}
+          PSQL_DB_USER: postgres
+          PSQL_DB_PASS: postgres
           PSQL_DB: mydb
           HOST: localhost
           PORT: 8080

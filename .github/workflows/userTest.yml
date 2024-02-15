@@ -36,7 +36,7 @@ jobs:
           npx jest
         env:
           PSQL_DB_USER: aakankshaw
-          PSQL_DB_PASS: ${{ secrets.PSQL_DB_PASS }}
+          PSQL_DB_PASS: postgres
           PSQL_DB: mydb
           POSTGRES_HOST: localhost
           PORT: 8080

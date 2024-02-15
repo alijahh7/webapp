@@ -11,6 +11,8 @@ jobs:
         image: postgres
         env:
           POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: mydb
+          POSTGRES_USER: ${{ secrets.PSQL_DB_USER }}
           
         options: >-
           --health-cmd pg_isready
@@ -29,10 +31,6 @@ jobs:
           node-version: '14.x'
       - name: Install dependencies
         run: npm install
-      - name: Create PostgreSQL user and database
-        run: |
-          sudo -i -u postgres psql -c "CREATE USER ${{ secrets.PSQL_DB_USER }} WITH PASSWORD '${{ secrets.PSQL_DB_PASS }}'; CREATE DATABASE mydb;"
-
       - name: Run tests
         run:
           npx jest

@@ -29,11 +29,10 @@ jobs:
           node-version: '14.x'
       - name: Install dependencies
         run: npm install
-      - name: Setup database
-        env:
-          PSQL_DB_USER: ${{ secrets.PSQL_DB_USER }}
-          PSQL_DB_PASS: ${{ secrets.PSQL_DB_PASS }}
-        run: sudo -u ${{ secrets.PSQL_DB_USER }} psql -c 'create database test;'
+      - name: Create PostgreSQL user and database
+        run: |
+          sudo -u postgres psql -c "CREATE USER ${{ secrets.PSQL_DB_USER }} WITH PASSWORD '${{ secrets.PSQL_DB_PASS }}';"
+          sudo -u postgres psql -c "CREATE DATABASE mydb;"
       - name: Run tests
         run:
           npx jest

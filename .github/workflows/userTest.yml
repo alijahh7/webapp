@@ -30,9 +30,7 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Run tests
-        run: |
-          export PSQL_DB_USER="${{ secrets.PSQL_DB_USER }}"
-          export PSQL_DB_PASS="${{ secrets.PSQL_DB_PASS }}"
+        run:
           npx jest
         env:
           PSQL_DB_USER: postgres

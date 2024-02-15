@@ -1,0 +1,39 @@
+name: PullRequest Workflow
+on:
+  pull_request:
+    branches: [main]
+jobs:
+  integration-tests:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres
+        env:
+          PSQL_DB_USER: ${{ secrets.PSQL_DB_USER }}
+          PSQL_DB_PASS: ${{ secrets.PSQL_DB_PASS }}
+          PSQL_DB: mydb
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - name: Node.js setup
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14.x'
+      - name: Install dependencies
+        run: npm install
+      - name: Run tests
+        run: npx jest
+        env:
+          HOST: localhost
+          PORT: 8080
+      - name: Checking completion of workflow
+        run: echo "DONE!"

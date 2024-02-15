@@ -10,4 +10,6 @@ const sequelize = new Sequelize(db, user, pass,{
     logging: false
 });
 
+
+
 module.exports=sequelize;

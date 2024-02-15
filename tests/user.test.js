@@ -1,16 +1,29 @@
 const req = require('supertest');
 const {app} = require('../index');
-const { sequelize } = require('../index');
+//const sequelize = require('../helpers/database');
 const supertest = require('supertest');
+require('dotenv').config();
+const {Sequelize}=require("sequelize");
 
+const db=process.env.PSQL_DB || 'mydb';
+const user=process.env.PSQL_DB_USER;
+const pass=process.env.PSQL_DB_PASS;
+const port = process.env.PORT || 8080;
+
+const sequelize = new Sequelize(db, user, pass,{
+    dialect: 'postgres',
+    logging: false
+});
+
+
+beforeAll(async () => {
+ 
+  await sequelize.sync({ force: true });
+});
 
 const Chance = require('chance');
 
 const chance = new Chance(); //https://chancejs.com/index.htmls
-
-beforeAll(async () => {
-  await sequelize.sync({ force: true });
-});
 
 const userDetails = {
   first_name: chance.first(),
@@ -23,7 +36,14 @@ const updatedDetails =
     {
         first_name: 'newFirst',            
     }
-
+    sequelize.sync()
+    .then(() => {
+      console.log('Sync success at TEST');
+    })
+    .catch((err) => {
+      console.error('Error', err);
+    });
+    
 //POST
 describe('Testing POST /v1/user and validating using GET /v1/user/self', ()=>{
 

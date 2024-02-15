@@ -30,7 +30,10 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Setup database
-        run: psql -h localhost -U ${{ secrets.PSQL_DB_USER }} -w -c 'CREATE DATABASE "mydb";' -d ${{ secrets.PSQL_DB_PASS }}
+        env:
+          PSQL_DB_USER: ${{ secrets.PSQL_DB_USER }}
+          PSQL_DB_PASS: ${{ secrets.PSQL_DB_PASS }}
+        run: sudo -u ${{ secrets.PSQL_DB_USER }} psql -c 'create database test;'
       - name: Run tests
         run:
           npx jest

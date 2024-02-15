@@ -67,7 +67,9 @@ describe('Testing POST /v1/user and validating using GET /v1/user/self', ()=>{
         const getResponse = await supertest(app).get("/v1/user/self").set('Authorization', 'Basic '+Buffer(`${userDetails.username}:${userDetails.password}`).toString("base64")).expect(200)
        
         expect(getResponse.body.first_name).toBe(userDetails.first_name);
-        
+        expect(getResponse.body.last_name).toBe(userDetails.last_name);
+        expect(getResponse.body.username).toBe(userDetails.username);
+
     });
 
 });

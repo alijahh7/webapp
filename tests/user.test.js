@@ -24,7 +24,6 @@ beforeAll(async () => {
 afterAll(async () => {
   await sequelize.close();
   setTimeout(() => {
-    console.log('Exiting process...');
     process.exit(0);
   }, 1000);
 });
@@ -36,7 +35,7 @@ const Chance = require('chance');
 const chance = new Chance(); //https://chancejs.com/index.htmls
 
 const userDetails = {
-  first_name: chance.first(),
+  first_name: chane.first(),
   last_name: chance.last(),
   password: chance.string({ length: 8 }),
   username: chance.email()

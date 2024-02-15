@@ -31,11 +31,8 @@ jobs:
         run: npm install
       - name: Create PostgreSQL user and database
         run: |
-          apt-get update
-          apt-get install --yes --no-install-recommends postgresql-client
-      - run: |
-          sudo -u postgres psql -c "CREATE USER ${{ secrets.PSQL_DB_USER }} WITH PASSWORD '${{ secrets.PSQL_DB_PASS }}';"
-          sudo -u postgres psql -c "CREATE DATABASE mydb;"
+          psql -u postgres -c "CREATE USER ${{ secrets.PSQL_DB_USER }} WITH PASSWORD '${{ secrets.PSQL_DB_PASS }}';"
+          psql -u postgres -c "CREATE DATABASE mydb;"
       - name: Run tests
         run:
           npx jest

@@ -10,7 +10,7 @@ jobs:
       postgres:
         image: postgres
         env:
-          POSTGRES_PASSWORD: ${{ secrets.PSQL_DB_PASS }}
+          POSTGRES_PASSWORD: postgres
           
         options: >-
           --health-cmd pg_isready

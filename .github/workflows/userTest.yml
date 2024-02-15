@@ -19,10 +19,8 @@ jobs:
           username: ${{ secrets.PSQL_DB_USER }}
           password: ${{ secrets.PSQL_DB_PASS }}
           database: mydb
-          port: 8080
+          port: 5432
         id: postgres
-      - name: Start postgres
-        run: systemctl start postgresql  
       - name: Install dependencies
         run: npm install
       - name: Run tests

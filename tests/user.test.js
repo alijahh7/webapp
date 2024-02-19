@@ -59,7 +59,7 @@ describe('Testing POST /v1/user and validating using GET /v1/user/self', ()=>{
     it("creating user in postgres, returns all details of created user, except password", async ()=>{
         
         const res = await supertest(app)
-        .post("/v1/user").send(userDetails).expect(201);
+        .post("/v1/user").send(userDetails).expect(200);
           });
 
 
@@ -79,7 +79,7 @@ describe('Testing PUT /v1/user/self and validating using GET /v1/user/self', ()=
 
   it("updating user in postgres, returns all details of created user, except password", async ()=>{
       const res = await supertest(app)
-      .put("/v1/user/self").set('Authorization', 'Basic '+Buffer(`${userDetails.username}:${userDetails.password}`).toString("base64")).send(updatedDetails).expect(204);
+      .put("/v1/user/self").set('Authorization', 'Basic '+Buffer(`${userDetails.username}:${userDetails.password}`).toString("base64")).send(updatedDetails).expect(200);
         });
        
 

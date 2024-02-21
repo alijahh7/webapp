@@ -23,12 +23,17 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
+  await deleteUserByUsername(userDetails.username);
   server.close();
 });
 
-
-
-
+async function deleteUserByUsername(username) {
+  await User.destroy({
+    where: {
+      username: username
+    }
+  });
+}
 
 const Chance = require('chance');
 
@@ -39,6 +44,10 @@ const userDetails = {
   last_name: chance.last(),
   password: chance.string({ length: 8 }),
   username: chance.email()
+  // first_name: "first",
+  // last_name: "last",
+  // password: "abcde",
+  // username: "first@last.com"
 };
 
 const updatedDetails = 

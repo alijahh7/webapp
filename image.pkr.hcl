@@ -12,9 +12,9 @@ source "googlecompute" "my-custom-image" {
   source_image_family     = "centos-stream-8"
   zone                    = "us-central1-a"
   disk_size               = 100
-  disk_type               = "pd-balanced"
+  disk_type               = "pd-standard"
   image_name              = "csye6225-{{timestamp}}"
-  image_description       = "CSYE 6225 APP Custom Image"
+  image_description       = "CSYE 6225 APP Custom Image at {{timestamp}}"
   image_family            = "csye6225-app-image"
   image_project_id        = "dev-alijahh"
   image_storage_locations = ["us"]
@@ -25,10 +25,15 @@ source "googlecompute" "my-custom-image" {
 build {
 
   sources = ["sources.googlecompute.my-custom-image"]
+
+   provisioner "file" {
+    source      = "webapp.zip"
+    destination = "/tmp/"
+  }
   provisioner "shell" {
     script = "setup.sh"
   }
-
+ 
 }
 
 

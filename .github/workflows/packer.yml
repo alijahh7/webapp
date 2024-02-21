@@ -35,8 +35,8 @@ jobs:
         PORT: 8080
     - name: Zipping repo
       run: | 
-        cd $GITHUB_WORKSPACE
-        zip -r webapp.zip .
+        rm -rf webapp.zip
+        zip -r webapp.zip . -x ".git/*" ".github/*"
     - name: Cloud Auth
       id: auth
       uses: google-github-actions/auth@v2

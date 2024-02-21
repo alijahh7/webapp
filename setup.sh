@@ -38,7 +38,8 @@ id csye6225
 
 echo "Unzipping artifacts..."
 sudo unzip "/tmp/webapp.zip" -d /opt/
-cd /opt/webapp
+echo "Unzipped folder:"
+cd /opt/webapp/
 ls
 
 # Change ownership
@@ -51,7 +52,7 @@ ls -l "/opt/webapp/"
 
 # Install dependencies
 echo "Installing dependencies..."
-cd "/opt/webapp"
+cd "/opt/webapp/"
 sudo npm install
 
 echo "DONE!"

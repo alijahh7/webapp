@@ -1,4 +1,3 @@
-#
 variable "project_id" {
   type = string
   default = "dev-alijahh"
@@ -41,7 +40,7 @@ variable "image_family" {
 
 variable "image_project_id" {
   type = string
-  default = "dev-alijahh
+  default = "dev-alijahh"
 }
 
 variable "image_storage_locations" {

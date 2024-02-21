@@ -36,8 +36,10 @@ echo "Creating system user"
 sudo useradd -M -s /usr/sbin/nologin -g csye6225 csye6225
 id csye6225
 
+echo "Make Directory"
+sudo mkdir /opt/webapp/
 echo "Unzipping artifacts..."
-sudo unzip "/tmp/webapp.zip" -d /opt/
+sudo unzip "/tmp/webapp.zip" -d /opt/webapp/
 echo "Unzipped folder:"
 cd /opt/webapp/
 ls

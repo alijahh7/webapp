@@ -23,6 +23,10 @@ jobs:
         database: mydb
         port: 5432
       id: postgres
+    - name: Zipping repo
+      run: | 
+        rm -rf webapp.zip
+        zip -r webapp.zip . -x ".git/*" ".github/*" 
     - name: Install dependencies
       run: npm install
     - name: Run tests
@@ -33,10 +37,6 @@ jobs:
         PSQL_DB: mydb
         POSTGRES_HOST: localhost
         PORT: 8080
-    - name: Zipping repo
-      run: | 
-        rm -rf webapp.zip
-        zip -r webapp.zip . -x ".git/*" ".github/*"
     - name: Cloud Auth
       id: auth
       uses: google-github-actions/auth@v2

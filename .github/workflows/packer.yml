@@ -23,6 +23,11 @@ jobs:
         database: mydb
         port: 5432
       id: postgres
+    - name: Creating .env file
+      run: |
+          cat << EOF > ./.env
+          ${{ secrets.ENV_VARS }}
+          EOF  
     - name: Zipping repo
       run: | 
         rm -rf webapp.zip

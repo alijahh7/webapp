@@ -1,15 +1,15 @@
 variable "project_id" {
-  type = string
+  type    = string
   default = "dev-alijahh"
 }
 
 variable "zone" {
-  type = string
+  type    = string
   default = "us-central1-a"
 }
 
 variable "source_image_family" {
-  type = string
+  type    = string
   default = "centos-stream-8"
 }
 
@@ -39,7 +39,7 @@ variable "image_family" {
 }
 
 variable "image_project_id" {
-  type = string
+  type    = string
   default = "dev-alijahh"
 }
 

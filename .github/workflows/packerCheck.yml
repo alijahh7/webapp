@@ -1,0 +1,30 @@
+name: Packer Check
+on:
+  pull_request:
+    branches: [main]
+jobs:
+  check-packer:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Cloud Auth
+      id: auth
+      uses: google-github-actions/auth@v2
+      with:
+        credentials_json: '${{ secrets.SA_KEY}}'
+    - name: Cloud SDK
+      uses: google-github-actions/setup-gcloud@v2
+    - name: gcloud CLI
+      run: gcloud info
+    - name: Packer Initialization
+      id: init
+      if: success()
+      run: packer init image.pkr.hcl
+    - name: Format packer
+      id: fmt
+      if: success()
+      run: packer fmt -check image.pkr.hcl
+    - name: Validate Packer
+      if: success()
+      run: packer validate image.pkr.hcl
+    - name: Completion Status
+      run: echo "Packer looks good!"    

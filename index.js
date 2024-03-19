@@ -3,6 +3,7 @@ const express=require("express");
 const sequelize = require('./helpers/database');
 const userController = require('./controllers/userController');
 const healthzController = require('./controllers/healthzController');
+const {logger} = require('./logger/logger');
 
 const app=express();
 const bodyParser = require("body-parser");
@@ -19,7 +20,14 @@ app.use((err, req, res, next) => {
 
 app.all('*', (req,res)=>{ //other methods
   res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate;');
-  console.log("hi")
+  logger.log({
+    level: 'warn',
+    httpRequest: {
+        httpMethod: `${req.method}`
+    },
+    message: "Method Not Found",
+    label: "Invalid Method"
+});
   res.status(404).json().send();
 });
 

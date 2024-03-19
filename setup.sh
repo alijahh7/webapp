@@ -3,6 +3,7 @@
 #echo "Installing updates"
 #dnf update
 
+#Node
 echo "Installing Node.js..."
 sudo dnf module -y enable nodejs:20
 sudo dnf module -y install nodejs:20/common

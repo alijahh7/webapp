@@ -6,6 +6,7 @@ const authenticateUser = require('../middleware/auth');
 const express = require('express');
 const passwordHasher = require('../helpers/passwordHashing');
 const {validateName}=require('../helpers/validators');
+const {logger} = require('../logger/logger');
 
 
 
@@ -53,6 +54,15 @@ router.post('/', async (req,res)=>{
             account_updated: newUser.account_updated
             }
         console.log("User created!");
+        logger.log({
+            level: 'info',
+            httpRequest: {
+                httpMethod: "POST"
+            },
+            message: "User Created Successfully",
+            label: "User"
+        }
+        )
         res.status(201);
         res.send(responseBody);
         }

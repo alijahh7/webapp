@@ -4,7 +4,7 @@ const sequelize = require('./helpers/database');
 const userController = require('./controllers/userController');
 const healthzController = require('./controllers/healthzController');
 const {logger} = require('./logger/logger');
-
+//empty
 const app=express();
 const bodyParser = require("body-parser");
 app.use(bodyParser.json());

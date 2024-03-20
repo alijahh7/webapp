@@ -9,10 +9,20 @@ const authenticateUser = async (req,res)=>{
     //console.log("Creds:", credentials)
     if(!credentials || !validUser){
         console.log("INVALID USER")
+        logger.log({
+            level: 'debug',
+            message: "Invalid User",
+            label: "Auth Check"
+        });
         return false;
     }
     else if(validUser){
         console.log("VALID USER")
+        logger.log({
+            level: 'debug',
+            message: "Valid User",
+            label: "Auth Check"
+        });
         var name=credentials.name;
     //console.log(name);
         return name;
@@ -38,11 +48,20 @@ const check = async (username,password, res) => {
         console.log("Password Match Status:", passwordStatus)
         if(passwordStatus){
             console.log("Passwords Match!")
-            
+            logger.log({
+                level: 'debug',
+                message: "Passwords Match!",
+                label: "Auth Check"
+            });
             return true;
         }
         else{
             console.log("Passwords DONT Match")
+            logger.log({
+                level: 'debug',
+                message: "Passwords DONT Match",
+                label: "Auth Check"
+            });
             return false;
         }
         

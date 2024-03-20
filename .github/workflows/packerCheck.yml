@@ -12,6 +12,7 @@ jobs:
       run: |
           cat << EOF > ./.env
           ${{ secrets.ENV_VARS }}
+          ${{ secrets.ENVIRONMENT }}
           EOF  
     - name: Zipping repo
       run: | 

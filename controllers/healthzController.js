@@ -9,14 +9,21 @@ router.get('/', async (req,res)=>{
         await sequelize.authenticate();
         if(!req.is()&&JSON.stringify(req.body) === '{}'){
             req.body=null;
-            console.log("ConsoleLog: Empty Body");
+            logger.log({
+                level: 'debug',
+                httpRequest: {
+                    httpMethod: `${req.method}`
+                },
+                message: "Empty Body",
+                label: "Status"
+            });
         }
         if(req.body||Object.keys(req.query).length > 0){  //true if it exists OR has query params
-            console.log("BAD REQUEST: payload exists");
+            //console.log("BAD REQUEST: payload exists");
             logger.log({
                 level: 'warn',
                 httpRequest: {
-                    httpMethod: "GET"
+                    httpMethod: `${req.method}`
                 },
                 message: "Payload exists in request at /healthz",
                 label: "Status"
@@ -28,13 +35,13 @@ router.get('/', async (req,res)=>{
             logger.log({
                 level: 'info',
                 httpRequest: {
-                    httpMethod: "GET"
+                    httpMethod: `${req.method}`
                 },
                 message: "Service Available at /healthz",
                 label: "Status"
             });
             res.status(200).json().send();
-        console.log("Success - no payload");
+        //console.log("Success - no payload");
         }
         
   
@@ -42,7 +49,7 @@ router.get('/', async (req,res)=>{
         logger.log({
             level: 'error',
             httpRequest: {
-                httpMethod: "GET"
+                httpMethod: `${req.method}`
             },
             message: "Service Unavailable at /healthz",
             label: "Status"
@@ -55,7 +62,7 @@ router.get('/', async (req,res)=>{
 router.all('/', (req,res)=>{ //other methods
     res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate;');
     logger.log({
-        level: 'info',
+        level: 'error',
         httpRequest: {
             httpMethod: `${req.method}`
         },

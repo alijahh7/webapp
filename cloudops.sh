@@ -4,6 +4,7 @@
 # curl -sSO https://storage.googleapis.com/cloud-ops-agent/ga/install.sh
 # sudo bash install.sh
 sudo curl -sSO https://dl.google.com/cloudagents/add-google-cloud-ops-agent-repo.sh
+echo "without sudo"
 sudo bash add-google-cloud-ops-agent-repo.sh --also-install
 
 #create file at /etc/google-cloud-ops-agent/config.yml
@@ -27,8 +28,9 @@ sudo bash add-google-cloud-ops-agent-repo.sh --also-install
 #       processors: [my-app-processor]
 # EOF
 sudo cp /opt/webapp/config.yaml /etc/google-cloud-ops-agent/config.yaml
-
+sudo cat /etc/google-cloud-ops-agent/config.yaml
 #restart ops agent
+echo "Restarting cloud ops"
 sudo systemctl restart google-cloud-ops-agent
 
 #mkdir and give permissions for: var/log/webapp

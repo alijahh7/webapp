@@ -9,7 +9,7 @@ const customFormat = json(({level, message, httpRequest, label, })=>{
 const logger = winston.createLogger({
   //level: 'info',
   format: combine(
-    timestamp(),
+    timestamp({ utc: true }),
     customFormat
   ),
   //defaultMeta: { service: 'user-service' },
@@ -20,7 +20,10 @@ const logger = winston.createLogger({
     //
     //new winston.transports.File({ filename: 'error.log', level: 'error' }),
     //new winston.transports.File({ filename: 'combined.log' }),
-    new winston.transports.File({ filename: '/var/log/webapp/combined.log' }),
+    new winston.transports.File({ filename: '/var/log/webapp/combined.log' })
+    // process.env.ENVIRONMENT === "PROD" ?
+    // new winston.transports.File({ filename: '/var/log/webapp/combined.log' }) : new winston.transports.File({ filename: 'combined.log'})
+    ,
   ],
 });
 

@@ -8,10 +8,18 @@ logging:
   processors:
     my-app-processor:
       type: parse_json
-      time_key: time
-      time_format: "%Y-%m-%dT%H:%M:%S.%L%Z"
-service:
-  pipelines:
-    default_pipeline:
-      receivers: [my-app-receiver]
-      processors: [my-app-processor]
+      time_key: timestamp
+      time_format: "%Y-%m-%dT%H:%M:%S.%LZ"
+    update-fields:
+      type: modify_fields
+      fields:
+        severity:
+          move_from: jsonPayload.level
+        httpRequest.requestMethod:
+          move_from: jsonPayload.httpRequest.httpMethod
+
+  service:
+    pipelines:
+      default_pipeline:
+        receivers: [my-app-receiver]
+        processors: [my-app-processor,update-fields]

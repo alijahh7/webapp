@@ -33,6 +33,14 @@ router.post('/', async (req,res)=>{
         if(existingUser){
             console.log(username);
             console.log("User already exists");
+            logger.log({
+                level: 'error',
+                httpRequest: {
+                    httpMethod: `${req.method}`
+                },
+                message: "User Already Exists",
+                label: "User Create"
+            });
             return res.status(400).json().end();  
         }
 
@@ -40,6 +48,14 @@ router.post('/', async (req,res)=>{
         //console.log("validator:",validateName(req.body.first_name))
         if(!validateName(req.body.first_name)||!validateName(req.body.last_name)){
             console.log("invalid name");
+            logger.log({
+                level: 'error',
+                httpRequest: {
+                    httpMethod: `${req.method}`
+                },
+                message: "User Creation Failed - Invalid Name",
+                label: "User Create"
+            });
             return res.status(400).send("Enter a valid first name and last name");
         }
        else{
@@ -57,12 +73,11 @@ router.post('/', async (req,res)=>{
         logger.log({
             level: 'info',
             httpRequest: {
-                httpMethod: "POST"
+                httpMethod: `${req.method}`
             },
-            message: "User Created Successfully",
-            label: "User"
-        }
-        )
+            message: `New User Created: ${username} `,
+            label: "User Create"
+        });
         res.status(201);
         res.send(responseBody);
         }
@@ -70,6 +85,14 @@ router.post('/', async (req,res)=>{
     }
     catch(error){
         console.log("POST failed", error);
+        logger.log({
+            level: 'error',
+            httpRequest: {
+                httpMethod: `${req.method}`
+            },
+            message: "POST Failed",
+            label: "User Create"
+        });
         res.status(400).send();
     }
 });
@@ -86,6 +109,14 @@ router.get('/self', async (req,res)=>{
         if(Object.keys(req.body).length>0){
         console.log("Non empty Body");
         res.status(400).end();
+        logger.log({
+            level: 'error',
+            httpRequest: {
+                httpMethod: `${req.method}`
+            },
+            message: "Request Has a Body",
+            label: "User Read"
+        });
         }
         if(usernameIfExists){
             console.log("User has been authenticated")
@@ -103,15 +134,39 @@ router.get('/self', async (req,res)=>{
             }
             //console.log("From authUser if ",currentUser)
             res.status(200);
+            logger.log({
+                level: 'info',
+                httpRequest: {
+                    httpMethod: `${req.method}`
+                },
+                message: "User Information Retrieved",
+                label: "User Read"
+            });
             res.send(responseBody);
             
         }
         else{
             res.status(401).end();
+            logger.log({
+                level: 'error',
+                httpRequest: {
+                    httpMethod: `${req.method}`
+                },
+                message: "Unauthorized User",
+                label: "User Read"
+            });
         }
     }
     catch{
         res.status(400).end();
+        logger.log({
+            level: 'error',
+            httpRequest: {
+                httpMethod: `${req.method}`
+            },
+            message: "GET Failed",
+            label: "User Read"
+        });
     }
 });
 
@@ -125,10 +180,26 @@ router.put('/self', async (req,res)=>{
             //checking for unallowed fields:
             if(!usernameIfExists){
                 console.log("Unauthorized User");
+                logger.log({
+                    level: 'error',
+                    httpRequest: {
+                        httpMethod: `${req.method}`
+                    },
+                    message: "Unauthorized User",
+                    label: "User Update"
+                });
                 res.status(401).end();
             }
             else if(Object.keys(req.body).length===0){
                 console.log("Empty Body");
+                logger.log({
+                    level: 'error',
+                    httpRequest: {
+                        httpMethod: `${req.method}`
+                    },
+                    message: "No Body",
+                    label: "User Update"
+                });
                 res.status(400).end();
             }
             Object.keys(req.body).forEach(key => {
@@ -136,6 +207,14 @@ router.put('/self', async (req,res)=>{
                     console.log("Unallowed fields included in body!")
                     validRequest=false;
                     res.status(400).end();
+                    logger.log({
+                        level: 'error',
+                        httpRequest: {
+                            httpMethod: `${req.method}`
+                        },
+                        message: "Trying to Update Unallowed Fields",
+                        label: "User Update"
+                    });
                 }
                 else{
                     console.log("All fields are valid! Ready to proceed further!")
@@ -172,6 +251,14 @@ router.put('/self', async (req,res)=>{
               });
             console.log("Account created field:",currentUser.account_created)
             console.log("Account updated field:",currentUser.account_updated)
+            logger.log({
+                level: 'info',
+                httpRequest: {
+                    httpMethod: `${req.method}`
+                },
+                message: "User Updated",
+                label: "User Update"
+            });
             res.status(204);
             //res.send();
            res.send();

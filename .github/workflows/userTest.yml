@@ -31,6 +31,7 @@ jobs:
           PSQL_DB: mydb
           POSTGRES_HOST: localhost
           PORT: 8080
+          ENVIRONMENT: TEST
 
       - name: Checking completion of workflow
         run: echo "DONE!"

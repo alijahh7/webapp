@@ -43,6 +43,7 @@ jobs:
         PSQL_DB: mydb
         POSTGRES_HOST: localhost
         PORT: 8080
+        ENVIRONMENT: TEST
     - name: Cloud Auth
       id: auth
       uses: google-github-actions/auth@v2

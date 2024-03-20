@@ -83,6 +83,11 @@ variable "db_pass" {
   default = "abc"
 }
 
+variable "cloudops_script" {
+  type    = string
+  default = "cloudops.sh"
+}
+
 packer {
   required_plugins {
     googlecompute = {
@@ -122,7 +127,9 @@ build {
     ]
     scripts = [
       var.setup_script,
-      var.systemd_script
+      var.systemd_script,
+      var.cloudops_script
+
     ]
   }
 }

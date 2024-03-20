@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const bAuth = require('basic-auth'); //https://github.com/jshttp/basic-auth#readme
 const User = require('../models/UserModel');
+const {logger} = require('../logger/logger');
 
 const authenticateUser = async (req,res)=>{
     //console.log("from auth User")

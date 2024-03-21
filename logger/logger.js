@@ -1,6 +1,6 @@
 const winston = require('winston');
 const {combine, timestamp, label, json} = winston.format;
-environment = process.env.ENVIRONMENT
+environment = process.env.ENVIRONMENT || "PROD"
 const customFormat = json(({level, message, httpRequest, label, })=>{
     return{
         level, httpRequest, message, label,  //Reference from: https://cloud.google.com/logging/docs/structured-logging

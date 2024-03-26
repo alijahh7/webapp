@@ -7,7 +7,7 @@ const express = require('express');
 const passwordHasher = require('../helpers/passwordHashing');
 const {validateName}=require('../helpers/validators');
 const {logger} = require('../logger/logger');
-
+const {publishToPubSub}= require('../pubsub');
 
 
 const router = express.Router();
@@ -78,6 +78,7 @@ router.post('/', async (req,res)=>{
             message: `New User Created: ${username} `,
             label: "User Create"
         });
+        publishToPubSub(JSON.stringify(responseBody)); //pubsub
         res.status(201);
         res.send(responseBody);
         }

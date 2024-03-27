@@ -35,14 +35,14 @@ const Chance = require('chance');
 const chance = new Chance(); //https://chancejs.com/index.htmls
 
 const userDetails = {
-  first_name: chance.first(),
-  last_name: chance.last(),
-  password: chance.string({ length: 8 }),
-  username: chance.email()
-  // first_name: "first",
-  // last_name: "last",
-  // password: "abcde",
-  // username: "first@last.com"
+  // first_name: chance.first(),
+  // last_name: chance.last(),
+  // password: chance.string({ length: 8 }),
+  // username: chance.email()
+  first_name: "first",
+  last_name: "last",
+  password: "abcde",
+  username: "first@last.com"
 };
 
 const updatedDetails = 

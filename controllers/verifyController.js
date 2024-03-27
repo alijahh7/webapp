@@ -25,7 +25,7 @@ router.get('/', async (req,res)=>{
             const currentUser = await User.findOne({where: {username: userVerifDetails.username}});
             currentUser.verificationStatus=true;
             await currentUser.save();
-            return res.status(200).json().send("User Verified Successfully");  
+            return res.status(200).send("User Verified Successfully");  
         }
         else{
             return res.status(410).send("Verification Link has expired!");

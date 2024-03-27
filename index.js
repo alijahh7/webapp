@@ -1,8 +1,10 @@
 require('dotenv').config();
 const express=require("express");
 const sequelize = require('./helpers/database');
+const verifyController = require('./controllers/verifyController');
 const userController = require('./controllers/userController');
 const healthzController = require('./controllers/healthzController');
+
 const {logger} = require('./logger/logger');
 //empty
 const app=express();
@@ -11,6 +13,7 @@ app.use(bodyParser.json());
 
 app.use('/v1/user/', userController);
 app.use('/healthz/', healthzController);
+app.use('/verify/', verifyController);
 
 app.use((err, req, res, next) => {
     console.log("Body has a payload")

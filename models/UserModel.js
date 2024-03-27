@@ -43,7 +43,13 @@ account_updated:{
     allowNull: true,
     readOnly: true,
     defaultValue: DataTypes.NOW,
-}},{
+},
+verificationStatus: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+}
+},{
     timestamps: false,
 });
 

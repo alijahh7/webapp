@@ -7,7 +7,8 @@ const express = require('express');
 const passwordHasher = require('../helpers/passwordHashing');
 const {validateName}=require('../helpers/validators');
 const {logger} = require('../logger/logger');
-const {publishToPubSub}= require('../pubsub');
+const { publishToPubSub } = require('../pubsub');
+
 
 
 const router = express.Router();
@@ -78,7 +79,7 @@ router.post('/', async (req,res)=>{
             message: `New User Created: ${username} `,
             label: "User Create"
         });
-        publishToPubSub(JSON.stringify(responseBody)); //pubsub
+        publishToPubSub(JSON.stringify(responseBody)); 
         res.status(201);
         res.send(responseBody);
         }
@@ -125,6 +126,9 @@ router.get('/self', async (req,res)=>{
                 {
                     where: {username:usernameIfExists}
                 }); 
+            if(!currentUser.verificationStatus) {
+                return res.status(403).send("Please verify your email before using the application!");
+            }   
             const responseBody = {
                 id:currentUser.id,
                 first_name: currentUser.first_name,
@@ -191,7 +195,16 @@ router.put('/self', async (req,res)=>{
                 });
                 res.status(401).end();
             }
-            else if(Object.keys(req.body).length===0){
+            else if(usernameIfExists){
+                const currentUser = await User.findOne(
+                    {
+                        where: {username:usernameIfExists}
+                    }); 
+                if(!currentUser.verificationStatus) {
+                    return res.status(403).send("Please verify your email before using the application!");
+                }   
+            }
+            if(Object.keys(req.body).length===0){
                 console.log("Empty Body");
                 logger.log({
                     level: 'error',

@@ -79,7 +79,13 @@ router.post('/', async (req,res)=>{
             message: `New User Created: ${username} `,
             label: "User Create"
         });
+        if(environment!='test'){
+        console.log("publishing");    
         publishToPubSub(JSON.stringify(responseBody)); 
+        }
+        else{
+            console.log("NOT PUBLISHING MESSAGE")
+        }
         res.status(201);
         res.send(responseBody);
         }
@@ -126,17 +132,19 @@ router.get('/self', async (req,res)=>{
                 {
                     where: {username:usernameIfExists}
                 }); 
+            console.log("CURRENT verif",currentUser.verificationStatus);    
             if(!currentUser.verificationStatus) {
                 logger.log({
                     level: 'warn',
                     httpRequest: {
                         httpMethod: `${req.method}`
                     },
-                    message: `Unverified User: ${username} `,
+                    message: `Unverified User `,
                     label: "User Read"
                 });
                 return res.status(403).send("Please verify your email before using the application!");
             }   
+            console.log("GET IS HERE!")
             const responseBody = {
                 id:currentUser.id,
                 first_name: currentUser.first_name,
@@ -214,7 +222,7 @@ router.put('/self', async (req,res)=>{
                         httpRequest: {
                             httpMethod: `${req.method}`
                         },
-                        message: `Unverified User: ${username} `,
+                        message: `Unverified User`,
                         label: "User Update"
                     });
                     return res.status(403).send("Please verify your email before using the application!");

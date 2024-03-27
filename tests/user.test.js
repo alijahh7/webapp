@@ -5,6 +5,8 @@ const server = require('../server')
 const supertest = require('supertest');
 require('dotenv').config();
 const {Sequelize}=require("sequelize");
+const User = require('../models/UserModel');
+environment='test';
 
 const db=process.env.PSQL_DB || 'mydb';
 const user=process.env.PSQL_DB_USER;
@@ -27,13 +29,6 @@ afterAll(async () => {
   server.close();
 });
 
-// async function deleteUserByUsername(username) {
-//   await User.destroy({
-//     where: {
-//       username: username
-//     }
-//   });
-// }
 
 const Chance = require('chance');
 
@@ -69,7 +64,18 @@ describe('Testing POST /v1/user and validating using GET /v1/user/self', ()=>{
         
         const res = await supertest(app)
         .post("/v1/user").send(userDetails).expect(201);
+
+        const currentUser = await User.findOne(
+          {
+              where: {username:userDetails.username}
+          }); 
+          currentUser.verificationStatus=true;
+          await currentUser.save();
           });
+        
+          
+       // 
+        //  
 
 
         it("checking if new user exists in db using GET", async()=>{  

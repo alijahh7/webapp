@@ -15,7 +15,7 @@ router.get('/', async (req,res)=>{
         }
         const userVerifDetails= await VerificationDetail.findOne({ where: {token: token}});
         if(!userVerifDetails){
-            return res.status(400).send("Token Does Not Exist");
+            return res.status(404).send("Token Does Not Exist");
         }
         //if current timestamp is before userVerifDetails.expiry then ->
         const currentTime = new Date().getTime();
@@ -28,7 +28,7 @@ router.get('/', async (req,res)=>{
             return res.status(200).json().send("User Verified Successfully");  
         }
         else{
-            return res.status(400).send("Verification Link has expired!");
+            return res.status(410).send("Verification Link has expired!");
         }
 
 

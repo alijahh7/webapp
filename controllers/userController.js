@@ -127,6 +127,14 @@ router.get('/self', async (req,res)=>{
                     where: {username:usernameIfExists}
                 }); 
             if(!currentUser.verificationStatus) {
+                logger.log({
+                    level: 'warn',
+                    httpRequest: {
+                        httpMethod: `${req.method}`
+                    },
+                    message: `Unverified User: ${username} `,
+                    label: "User Read"
+                });
                 return res.status(403).send("Please verify your email before using the application!");
             }   
             const responseBody = {
@@ -201,6 +209,14 @@ router.put('/self', async (req,res)=>{
                         where: {username:usernameIfExists}
                     }); 
                 if(!currentUser.verificationStatus) {
+                    logger.log({
+                        level: 'warn',
+                        httpRequest: {
+                            httpMethod: `${req.method}`
+                        },
+                        message: `Unverified User: ${username} `,
+                        label: "User Update"
+                    });
                     return res.status(403).send("Please verify your email before using the application!");
                 }   
             }

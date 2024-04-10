@@ -76,6 +76,8 @@ jobs:
 
     # - name: Fetching Startup Script
     #   run: sudo cat ${{ secrets.STARTUP_SCRIPT }} > startup.sh   
+    - name: Echo Image name
+      run: cat imagename.txt
     - name: New VM Template
       run: |
           gcloud compute instance-templates create centos-vm-template-$(date +%Y%m%d%H%M) \

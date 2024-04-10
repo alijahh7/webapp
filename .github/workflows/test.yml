@@ -24,7 +24,7 @@ jobs:
           echo "db_host=$(echo $(gcloud secrets versions access latest --secret='secret-host'))" >> $GITHUB_ENV
           echo "db_pass=$(echo $(gcloud secrets versions access latest --secret='secret-pass'))" >> $GITHUB_ENV
           echo "image_name=$(cat imagename.txt)" >> $GITHUB_ENV
-          echo "template_name=$(centos-vm-template-$(date +%Y%m%d%H%M))" >> $GITHUB_ENV
+          echo "template_name=centos-vm-template-$(date +%Y%m%d%H%M)" >> $GITHUB_ENV
       - name: Echo Names
         run: |
           echo $template_name

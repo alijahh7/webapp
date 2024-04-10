@@ -59,7 +59,7 @@ jobs:
           --max-unavailable=0    
       - name: Wait for Refresh
         run: |
-         gcloud compute instance-groups managed wait-until ${{secrets.$MIG_NAME }} \
+         gcloud compute instance-groups managed wait-until ${{secrets.MIG_NAME }} \
           --version-target-reached \
           --region=${{ secrets.REGION }}
       - name: Completion Status

@@ -1,0 +1,41 @@
+name: Temp
+on:
+  pull_request:
+    branches: [main]
+jobs:
+  check-packer:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out repository code
+      uses: actions/checkout@v4
+    - name: Cloud Auth
+      id: auth
+      uses: google-github-actions/auth@v2
+      with:
+        credentials_json: '${{ secrets.SA_KEY}}'
+    - name: Cloud SDK
+      uses: google-github-actions/setup-gcloud@v2
+    - name: gcloud CLI
+      run: gcloud info
+    - name: Setting Variables for Template
+      run:   |
+          db_host=$(gcloud secrets versions access latest --secret=secret-host)
+          db_pass=$(gcloud secrets versions access latest --secret=secret-pass)  
+          echo "csye6225-1712767964" > imagename.txt
+    - name: Echo Image name
+      run: cat imagename.txt      
+    - name: New VM Template
+      run: |
+          gcloud compute instance-templates create centos-vm-template-$(date +%Y%m%d%H%M) \
+            --instance-template-region=us-central1  \
+            --region=us-central1 \
+            --machine-type=e2-standard-2 \
+            --image=$(cat imagename.txt) \
+            --subnet=webapp \
+            --service-account=${{ secrets.VM_SA }} \
+            --scopes=https://www.googleapis.com/auth/cloud-platform \
+            --metadata=db-user=webapp,db-name=mydb,db-host=$db_host,db-pass=$db_pass /
+            --metadata-from-file=startup-script-url=gs://startup-script-metadata/startup.sh \
+            --boot-disk-type=pd-standard
+    - name: Completion Status
+      run: echo "DONE!"    

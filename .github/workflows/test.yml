@@ -23,6 +23,8 @@ jobs:
         run: |
           echo "db_host=$(echo $(gcloud secrets versions access latest --secret='secret-host'))" >> $GITHUB_ENV
           echo "db_pass=$(echo $(gcloud secrets versions access latest --secret='secret-pass'))" >> $GITHUB_ENV
+          echo "disk_kms=$(echo $(gcloud secrets versions access latest --secret='secret-kms-key'))" >> $GITHUB_ENV
+
           echo "image_name=$(cat imagename.txt)" >> $GITHUB_ENV
           echo "template_name=centos-vm-template-$(date +%Y%m%d%H%M)" >> $GITHUB_ENV
       - name: Echo Names
@@ -40,6 +42,7 @@ jobs:
             --service-account=${{ secrets.VM_SA }} \
             --scopes=https://www.googleapis.com/auth/cloud-platform \
             --metadata=db-user=webapp,db-name=mydb,db-host=$db_host,db-pass=$db_pass,startup-script="${{ secrets.STARTUP_SCRIPT }}" \
-            --boot-disk-type=pd-standard
+            --boot-disk-type=pd-standard \
+            --boot-disk-kms-key=$disk_kms
       - name: Completion Status
         run: echo "DONE!"    

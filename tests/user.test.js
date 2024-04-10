@@ -1,7 +1,7 @@
 const req = require('supertest');
 const {app} = require('../index');
 const server = require('../server')
-//const sequelize = require('../helpers/database');
+const sequelize = require('../helpers/database');
 const supertest = require('supertest');
 require('dotenv').config();
 const {Sequelize}=require("sequelize");
@@ -13,16 +13,16 @@ const user=process.env.PSQL_DB_USER;
 const pass=process.env.PSQL_DB_PASS;
 const port = process.env.PORT || 8080;
 
-const sequelize = new Sequelize(db, user, pass,{
-    dialect: 'postgres',
-    logging: false
-});
+// const sequelize = new Sequelize(db, user, pass,{
+//     dialect: 'postgres',
+//     logging: false
+// });
 
 
-beforeAll(async () => {
- console.log("Synced");
-  await sequelize.sync({ force: true });
-});
+// beforeAll(async () => {
+//  console.log("Synced");
+//   await sequelize.sync({ force: true });
+// });
 
 afterAll(async () => {
   //await deleteUserByUsername(userDetails.username);
@@ -42,20 +42,20 @@ const userDetails = {
   first_name: "first",
   last_name: "last",
   password: "abcde",
-  username: "first@last.com"
+  username: "first1@last.com"
 };
 
 const updatedDetails = 
     {
         first_name: 'newFirst',            
     }
-    sequelize.sync()
-    .then(() => {
-      console.log('Sync success at TEST');
-    })
-    .catch((err) => {
-      console.error('Error', err);
-    });
+    // sequelize.sync()
+    // .then(() => {
+    //   console.log('Sync success at TEST');
+    // })
+    // .catch((err) => {
+    //   console.error('Error', err);
+    // });
     
 //POST
 describe('Testing POST /v1/user and validating using GET /v1/user/self', ()=>{

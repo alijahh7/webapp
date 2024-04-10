@@ -92,6 +92,7 @@ jobs:
           --region=${{ secrets.REGION }} \
           --machine-type=${{secrets.MACHINE_TYPE}} \
           --image=$image_name \
+          --network=${{secrets.NETWORK}} \
           --subnet=${{secrets.SUBNET}} \
           --service-account=${{ secrets.VM_SA }} \
           --scopes=${{secrets.SA_SCOPE}} \

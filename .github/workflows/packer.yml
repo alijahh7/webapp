@@ -68,28 +68,56 @@ jobs:
     - name: Build Packer
       if: success()
       run: packer build image.pkr.hcl | grep 'csye6225-*' > imagename.txt
+      
     - name: Setting Variables for Template
-      run:   |
-          db_host=$(gcloud secrets versions access latest --secret=secret-host)
-          db_pass=$(gcloud secrets versions access latest --secret=secret-pass)
-    #       image_name=$(sudo cat imagename.txt)
+      run: |
+        echo "db_host=$(echo $(gcloud secrets versions access latest --secret='secret-host'))" >> $GITHUB_ENV
+        echo "db_pass=$(echo $(gcloud secrets versions access latest --secret='secret-pass'))" >> $GITHUB_ENV
+        echo "disk_kms=$(echo $(gcloud secrets versions access latest --secret='secret-kms-key'))" >> $GITHUB_ENV
 
-    # - name: Fetching Startup Script
-    #   run: sudo cat ${{ secrets.STARTUP_SCRIPT }} > startup.sh   
-    - name: Echo Image name
-      run: cat imagename.txt
+        echo "image_name=$(cat imagename.txt)" >> $GITHUB_ENV
+        echo "template_name=centos-vm-template-$(date +%Y%m%d%H%M)" >> $GITHUB_ENV
+
+    - name: Echo Names
+      run: |
+        echo $template_name
+        echo $image_name
+
     - name: New VM Template
       run: |
-          gcloud compute instance-templates create centos-vm-template-$(date +%Y%m%d%H%M) \
-            --instance-template-region=us-central1  \
-            --region=us-central1 \
-            --machine-type=e2-standard-2 \
-            --image=$(cat imagename.txt) \
-            --subnet=webapp \
-            --service-account=${{ secrets.VM_SA }} \
-            --scopes=https://www.googleapis.com/auth/cloud-platform \
-            --metadata=db-user=webapp,db-name=mydb,db-host=$db_host,db-pass=$db_pass /
-            --metadata-from-file=startup-script-url=gs://startup-script-metadata/startup.sh \
-            --boot-disk-type=pd-standard
+        gcloud compute instance-templates create $template_name \
+          --instance-template-region=${{ secrets.REGION }}  \
+          --region=${{ secrets.REGION }} \
+          --machine-type=${{secrets.MACHINE_TYPE}} \
+          --image=$image_name \
+          --subnet=webapp \
+          --service-account=${{ secrets.VM_SA }} \
+          --scopes=${{secrets.SA_SCOPE}} \
+          --metadata=db-user=${{secrets.DB_NAME}},db-name=${{secrets.DB_NAME}},db-host=$db_host,db-pass=$db_pass,startup-script="${{ secrets.STARTUP_SCRIPT }}" \
+          --boot-disk-type=${{secrets.DISK_TYPE}} \
+          --boot-disk-kms-key=$disk_kms
+
+    - name: Setup MIG with new Template
+      run: | 
+        gcloud compute instance-groups managed set-instance-template ${{secrets.MIG_NAME}} \
+        --template=projects/${{ secrets.GCP_DEV_PROJECT }}/regions/${{ secrets.REGION }}/instanceTemplates/$template_name \
+        --region=${{ secrets.REGION }}
+
+    - name: Roll out updates
+      run: |
+        gcloud compute instance-groups managed rolling-action start-update ${{secrets.MIG_NAME}} \
+        --version template=projects/${{ secrets.GCP_DEV_PROJECT}}/regions/${{ secrets.REGION }}/instanceTemplates/$template_name \
+        --region=${{ secrets.REGION }} \
+        --type=${{ secrets.ROLLING_TYPE }} \
+        --max-surge=3 \
+        --max-unavailable=0    
+
+    - name: Wait for Refresh
+      run: |
+        gcloud compute instance-groups managed wait-until ${{secrets.MIG_NAME }} \
+        --version-target-reached \
+        --region=${{ secrets.REGION }}
+
     - name: Completion Status
       run: echo "DONE!"    
+

@@ -34,8 +34,8 @@ jobs:
       - name: New VM Template
         run: |
           gcloud compute instance-templates create $template_name \
-            --instance-template-region=us-central1  \
-            --region=us-central1 \
+            --instance-template-region=${{ secrets.REGION }}  \
+            --region=${{ secrets.REGION }} \
             --machine-type=e2-standard-2 \
             --image=$image_name \
             --subnet=webapp \
@@ -44,5 +44,24 @@ jobs:
             --metadata=db-user=webapp,db-name=mydb,db-host=$db_host,db-pass=$db_pass,startup-script="${{ secrets.STARTUP_SCRIPT }}" \
             --boot-disk-type=pd-standard \
             --boot-disk-kms-key=$disk_kms
+      - name: Setup MIG with new Template
+        run: | 
+          gcloud compute instance-groups managed set-instance-template ${{secrets.MIG_NAME}} \
+          --template=projects/${{ secrets.GCP_DEV_PROJECT }}/regions/${{ secrets.REGION }}/instanceTemplates/$template_name \
+          --region=${{ secrets.REGION }}
+      - name: Roll out updates
+        run: |
+         gcloud compute instance-groups managed rolling-action start-update $MIG_NAME \
+          --version template=projects/${{ secrets.GCP_DEV_PROJECT}}/regions/${{ secrets.REGION }}/instanceTemplates/$template_name \
+          --region=${{ secrets.REGION }} \
+          --type=${{ secrets.ROLLING_TYPE }} \
+          --max-surge=3 \
+          --max-unavailable=0    
+      - name: Wait for Refresh
+        run: |
+         gcloud compute instance-groups managed wait-until $MIG_NAME \
+          --version-target-reached \
+          --region=${{ secrets.REGION }}
       - name: Completion Status
         run: echo "DONE!"    
+

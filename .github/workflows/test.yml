@@ -19,7 +19,7 @@ jobs:
         run: gcloud info
       - name: Setting Variables for Template
         run: |
-          db_host=$(echo $(gcloud secrets versions access latest --secret='secret-host'))
+          echo "db_host=$(echo $(gcloud secrets versions access latest --secret='secret-host'))" >> $GITHUB_ENV
           db_pass=$(gcloud secrets versions access latest --secret='secret-pass')
           echo "csye6225-1712767964" > imagename.txt
       - name: Echo Image name

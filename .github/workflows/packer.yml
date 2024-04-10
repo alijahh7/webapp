@@ -95,7 +95,7 @@ jobs:
           --subnet=${{secrets.SUBNET}} \
           --service-account=${{ secrets.VM_SA }} \
           --scopes=${{secrets.SA_SCOPE}} \
-          --metadata=db-user=${{secrets.DB_NAME}},db-name=${{secrets.DB_NAME}},db-host=$db_host,db-pass=$db_pass,startup-script="${{ secrets.STARTUP_SCRIPT }}" \
+          --metadata=db-user=${{secrets.DB_USER}},db-name=${{secrets.DB_NAME}},db-host=$db_host,db-pass=$db_pass,startup-script="${{ secrets.STARTUP_SCRIPT }}" \
           --boot-disk-type=${{secrets.DISK_TYPE}} \
           --boot-disk-kms-key=$disk_kms
 

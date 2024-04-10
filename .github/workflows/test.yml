@@ -51,7 +51,7 @@ jobs:
           --region=${{ secrets.REGION }}
       - name: Roll out updates
         run: |
-         gcloud compute instance-groups managed rolling-action start-update $MIG_NAME \
+         gcloud compute instance-groups managed rolling-action start-update ${{secrets.MIG_NAME}} \
           --version template=projects/${{ secrets.GCP_DEV_PROJECT}}/regions/${{ secrets.REGION }}/instanceTemplates/$template_name \
           --region=${{ secrets.REGION }} \
           --type=${{ secrets.ROLLING_TYPE }} \

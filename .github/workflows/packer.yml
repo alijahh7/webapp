@@ -98,7 +98,8 @@ jobs:
           --scopes=${{secrets.SA_SCOPE}} \
           --metadata=db-user=${{secrets.DB_USER}},db-name=${{secrets.DB_NAME}},db-host=$db_host,db-pass=$db_pass,startup-script="${{ secrets.STARTUP_SCRIPT }}" \
           --boot-disk-type=${{secrets.DISK_TYPE}} \
-          --boot-disk-kms-key=$disk_kms
+          --boot-disk-kms-key=$disk_kms \
+          --tags=${{secrets.VM_TAG}}
 
     - name: Setup MIG with new Template
       run: | 

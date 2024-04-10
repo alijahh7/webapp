@@ -67,7 +67,9 @@ jobs:
       run: packer validate image.pkr.hcl
     - name: Build Packer
       if: success()
-      run: packer build image.pkr.hcl | grep 'csye6225-*' > imagename.txt
+      run: |
+        packer build image.pkr.hcl | tee build_output.txt
+        echo $(cat build_output.txt | grep 'project: csye6225-*' | cut -d ' ' -f 11) > imagename.txt
       
     - name: Setting Variables for Template
       run: |

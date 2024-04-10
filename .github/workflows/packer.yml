@@ -68,24 +68,26 @@ jobs:
     - name: Build Packer
       if: success()
       run: packer build image.pkr.hcl | grep 'project:*' | cut -d ' ' -f 2 > imagename.txt
-    - name: Setting Variables for Template
-      run:   |
-          db_host=$(gcloud secrets versions access latest --secret=secret-host)
-          db_pass=$(gcloud secrets versions access latest --secret=secret-pass)
-          image_name=$(sudo cat imagename.txt)
+    # - name: Setting Variables for Template
+    #   run:   |
+    #       db_host=$(gcloud secrets versions access latest --secret=secret-host)
+    #       db_pass=$(gcloud secrets versions access latest --secret=secret-pass)
+    #       image_name=$(sudo cat imagename.txt)
 
     # - name: Fetching Startup Script
     #   run: sudo cat ${{ secrets.STARTUP_SCRIPT }} > startup.sh   
     - name: New VM Template
       run: |
           gcloud compute instance-templates create centos-vm-template-$(date +%Y%m%d%H%M) \
+            --instance-template-region=us-central1  \
             --region=us-central1 \
             --machine-type=e2-standard-2 \
-            --image=$image_name \
+            --image=$(cat imagename.txt) \
             --subnet=webapp \
             --service-account=${{ secrets.VM_SA }} \
             --scopes=https://www.googleapis.com/auth/cloud-platform \
-            --metadata=db-user=webapp,db-name=mydb,db-host=$db_host,db-pass=$db_pass,startup-script=${{ secrets.STARTUP_SCRIPT }} \
+            --metadata=db-user=webapp,db-name=mydb,db-host=$(gcloud secrets versions access latest --secret=secret-host),db-pass=$(gcloud secrets versions access latest --secret=secret-pass) /
+            --metadata-from-file=startup-script-url=gs://startup-script-metadata/startup.sh \
             --boot-disk-type=pd-standard
     - name: Completion Status
       run: echo "DONE!"    

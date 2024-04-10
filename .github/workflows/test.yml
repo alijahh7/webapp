@@ -23,7 +23,11 @@ jobs:
           db_pass=$(gcloud secrets versions access latest --secret=secret-pass)  
           echo "csye6225-1712767964" > imagename.txt
     - name: Echo Image name
-      run: cat imagename.txt      
+      run: cat imagename.txt  
+    - name: Create sh file
+      run: echo ${{ secrets.STARTUP_SCRIPT }} > startup.sh
+    - name: Check sh 
+      run: cat startup.sh       
     - name: New VM Template
       run: |
           gcloud compute instance-templates create centos-vm-template-$(date +%Y%m%d%H%M) \

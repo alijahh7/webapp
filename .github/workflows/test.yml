@@ -34,7 +34,7 @@ jobs:
             --subnet=webapp \
             --service-account=${{ secrets.VM_SA }} \
             --scopes=https://www.googleapis.com/auth/cloud-platform \
-            --metadata=db-user=webapp,db-name=mydb,db-host=$db_host,db-pass=$db_pass,startup-script=${{ secrets.STARTUP_SCRIPT }}
+            --metadata=db-user=webapp,db-name=mydb,db-host=$db_host,db-pass=$db_pass,startup-script="${{ secrets.STARTUP_SCRIPT }}"
             --boot-disk-type=pd-standard
       - name: Completion Status
         run: echo "DONE!"    

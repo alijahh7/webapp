@@ -19,10 +19,10 @@ const port = process.env.PORT || 8080;
 // });
 
 
-// beforeAll(async () => {
-//  console.log("Synced");
-//   await sequelize.sync({ force: true });
-// });
+beforeAll(async () => {
+ 
+  await sequelize.sync({ force: true }).then(console.log("Synced"));
+});
 
 afterAll(async () => {
   //await deleteUserByUsername(userDetails.username);

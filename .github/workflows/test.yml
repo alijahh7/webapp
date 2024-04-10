@@ -19,8 +19,8 @@ jobs:
         run: gcloud info
       - name: Setting Variables for Template
         run: |
-          db_host=$(gcloud secrets versions access latest --secret=secret-host)
-          db_pass=$(gcloud secrets versions access latest --secret=secret-pass)  
+          echo "db_host=$(echo $(gcloud secrets versions access latest --secret='secret-host'))" >> $ENV_VAR
+          echo "db_pass=$(echo $(gcloud secrets versions access latest --secret='secret-pass'))" >> $ENV_VAR
           echo "csye6225-1712767964" > imagename.txt
       - name: Echo Image name
         run: cat imagename.txt     
@@ -34,7 +34,7 @@ jobs:
             --subnet=webapp \
             --service-account=${{ secrets.VM_SA }} \
             --scopes=https://www.googleapis.com/auth/cloud-platform \
-            --metadata=db-user=webapp,db-name=mydb,db-host=$db_host,db-pass=$db_pass,startup-script="${{ secrets.STARTUP_SCRIPT }}"
+            --metadata=db-user=webapp,db-name=mydb,db-host=$db_host,db-pass=$db_pass,startup-script="${{ secrets.STARTUP_SCRIPT }}" \
             --boot-disk-type=pd-standard
       - name: Completion Status
         run: echo "DONE!"    

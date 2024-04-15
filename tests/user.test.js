@@ -58,12 +58,12 @@ const updatedDetails =
     // });
     
 //POST
-describe('Testing POST /v1/user and validating using GET /v1/user/self', ()=>{
+describe('Testing POST /v2/user and validating using GET /v2/user/self', ()=>{
 
     it("creating user in postgres, returns all details of created user, except password", async ()=>{
         
         const res = await supertest(app)
-        .post("/v1/user").send(userDetails).expect(201);
+        .post("/v2/user").send(userDetails).expect(201);
 
         const currentUser = await User.findOne(
           {
@@ -79,7 +79,7 @@ describe('Testing POST /v1/user and validating using GET /v1/user/self', ()=>{
 
 
         it("checking if new user exists in db using GET", async()=>{  
-        const getResponse = await supertest(app).get("/v1/user/self").set('Authorization', 'Basic '+Buffer(`${userDetails.username}:${userDetails.password}`).toString("base64")).expect(200)
+        const getResponse = await supertest(app).get("/v2/user/self").set('Authorization', 'Basic '+Buffer(`${userDetails.username}:${userDetails.password}`).toString("base64")).expect(200)
        
         expect(getResponse.body.first_name).toBe(userDetails.first_name);
         expect(getResponse.body.last_name).toBe(userDetails.last_name);
@@ -90,16 +90,16 @@ describe('Testing POST /v1/user and validating using GET /v1/user/self', ()=>{
 });
 
 //PUT
-describe('Testing PUT /v1/user/self and validating using GET /v1/user/self', ()=>{
+describe('Testing PUT /v2/user/self and validating using GET /v2/user/self', ()=>{
 
   it("updating user in postgres, returns all details of created user, except password", async ()=>{
       const res = await supertest(app)
-      .put("/v1/user/self").set('Authorization', 'Basic '+Buffer(`${userDetails.username}:${userDetails.password}`).toString("base64")).send(updatedDetails).expect(204);
+      .put("/v2/user/self").set('Authorization', 'Basic '+Buffer(`${userDetails.username}:${userDetails.password}`).toString("base64")).send(updatedDetails).expect(204);
         });
        
 
       it("checking if new user exists in db using GET", async()=>{  
-      const getResponse = await supertest(app).get("/v1/user/self").set('Authorization', 'Basic '+Buffer(`${userDetails.username}:${userDetails.password}`).toString("base64")).expect(200)
+      const getResponse = await supertest(app).get("/v2/user/self").set('Authorization', 'Basic '+Buffer(`${userDetails.username}:${userDetails.password}`).toString("base64")).expect(200)
      
       expect(getResponse.body.first_name).toBe(updatedDetails.first_name);
       

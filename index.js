@@ -11,7 +11,7 @@ const app=express();
 const bodyParser = require("body-parser");
 app.use(bodyParser.json());
 
-app.use('/v1/user/', userController);
+app.use('/v2/user/', userController);
 app.use('/healthz/', healthzController);
 app.use('/verify/', verifyController);
 
